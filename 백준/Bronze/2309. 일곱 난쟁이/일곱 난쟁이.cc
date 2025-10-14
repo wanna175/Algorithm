@@ -1,27 +1,46 @@
-#include<iostream>
-#include<algorithm>
-#include<vector>
-using namespace std;
-vector<int> arr;
-int main(void) {
-	ios::sync_with_stdio(false);
-	cin.tie(0);
-	int n;
-	for (int i = 0; i < 9; ++i) {
-		cin >> n; arr.push_back(n);
-	}
-	sort(arr.begin(), arr.end());
-	for (int a = 0; a < 9; ++a)
-		for (int b = a + 1; b < 9; ++b)
-			for (int c = b + 1; c < 9; ++c)
-				for (int d = c + 1; d < 9; ++d)
-					for (int e = d + 1; e < 9; ++e)
-						for (int f = e + 1; f < 9; ++f)
-							for (int g = f + 1; g < 9; ++g)
-								if (arr[a] + arr[b] + arr[c] + arr[d] + arr[e] + arr[f] + arr[g] == 100) {
-									cout << arr[a] << '\n' << arr[b] << '\n' << arr[c] << '\n' << arr[d] << '\n' << arr[e] << '\n' << arr[f] << '\n' << arr[g];
-									return 0;
-								}
+#include <bits/stdc++.h>
 
-	return 0;
+using namespace std;
+vector<int> v;
+bool flag = false;
+vector<int> ret;
+void combi(int start,int r, vector<int> b){
+	if (flag) return;
+	if(r == b.size()){
+		//logic
+		int sum = 0;
+		for(int i : b){
+			sum+=v[i];
+		}
+		if (sum == 100){
+		    flag = true;
+		    for(int i : b){
+		        ret.push_back(v[i]);	
+			}
+		    
+		}
+		return;
+	}
+	for(int i = start+1;i<v.size();++i){
+		b.push_back(i);
+		combi(i,r,b);
+		b.pop_back();
+	}
 }
+int main(){
+	ios::sync_with_stdio(0);
+	cin.tie(NULL); cout.tie(NULL);
+	
+	for(int i=0;i<9;++i){
+		int n;
+		cin>>n;
+		v.push_back(n);
+	}
+	sort(v.begin(),v.end());
+	vector<int> b;
+	combi(-1,7,b);
+	for(int i : ret){
+		cout << i << '\n';
+	}
+	return 0;
+} 
