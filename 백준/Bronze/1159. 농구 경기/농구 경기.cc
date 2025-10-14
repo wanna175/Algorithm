@@ -3,7 +3,7 @@
 using namespace std;
 
 int N;
-bool flag = false;
+string ret;
 const string str = "PREDAJA"; 
 vector<int> v(26,0);
 int main(){
@@ -17,11 +17,11 @@ int main(){
 	}
 	for(int i =0;i<26;++i){
 		if (v[i] >=5){
-		   cout << (char)('a'+i);
-		   flag = true;
+			ret+= (i+'a');
 		}
 	}
-	if (!flag) cout << str; 
+	if (ret.size()) cout << ret;
+	else cout << str; 
 	cout << '\n';
 	return 0;
-} 
+}
