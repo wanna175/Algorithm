@@ -1,18 +1,19 @@
-#include <iostream>
-#include <string>
-#include <algorithm>
-using namespace std;
+#include <bits/stdc++.h>
 
-int main(void) {
+using namespace std;
+string s;
+vector<int> ret(26,0);
+int main(){
 	ios::sync_with_stdio(false);
-	cin.tie(0);
-	string s;
-	int alpha[26];
-	fill(alpha, alpha + 26, 0);
-	cin >> s;
-	for (int i = 0; i < s.size(); ++i)
-		alpha[s[i] - 'a']++;
-	for (int i = 0; i < 26; ++i)
-		cout << alpha[i] << ' ';
+	cin.tie(NULL); cout.tie(NULL);
+	
+	cin>>s;
+	for(int i : s){
+		ret[i - 'a']++;
+	}
+	for(int i : ret){
+		cout << i << " ";
+	}
+	cout << '\n';
 	return 0;
 }
