@@ -1,26 +1,22 @@
-#include<iostream>
-#include<vector>
-#include<string>
-using namespace std;
+#include <bits/stdc++.h>
 
-int main(void) {
-	ios::sync_with_stdio(false);
-	cin.tie(0);
-	int N;
-	cin >> N;
-	int answer = 0;
-	for (int i = 0; i < N; ++i) {
-		vector<char> stack;
+using namespace std;
+int N,ret;
+int main(){
+	ios::sync_with_stdio(0);
+	cin.tie(NULL); cout.tie(NULL);
+	
+	cin>>N;
+	for(int i=0;i<N;++i){
+		stack<char> st;
 		string s;
-		cin >> s;
-		for (auto ch : s) {
-			if (!stack.empty() && ch == stack.back())
-				stack.pop_back();
-			else
-				stack.push_back(ch);
+		cin>>s;
+		for(char c:s){
+			if(!st.empty()&&st.top() == c) st.pop();
+			else st.push(c);
 		}
-		if (stack.empty()) answer++;
+		if(st.empty()) ret++;
 	}
-	cout << answer;
+	cout << ret << '\n';
 	return 0;
-}
+} 
