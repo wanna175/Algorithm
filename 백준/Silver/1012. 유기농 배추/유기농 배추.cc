@@ -1,56 +1,45 @@
-#include <iostream>
-#include <vector>
-#include <map>
+#include <bits/stdc++.h>
 
 using namespace std;
-void adjacent_idx(int x,int y, int** pos,int M,int N) {
-	if (x < 0 || M - 1 < x || y < 0 || N - 1 < y)
-		return;
-	
-	if (pos[x][y] == 1) {
-		pos[x][y] = 0;
-		adjacent_idx(x + 1, y, pos,M,N);
-		adjacent_idx(x - 1, y, pos,M,N);
-		adjacent_idx(x, y + 1, pos,M,N);
-		adjacent_idx(x, y - 1, pos,M,N);
+int T,N,M,K;
+
+const int dy[] = {1,0,-1,0};
+const int dx[] = {0,1,0,-1};
+
+int a[54][54], visited[54][54];
+void DFS(int y,int x){
+	visited[y][x] = 1;
+	for(int i=0;i<4;++i){
+		int ny = y+dy[i];
+		int nx = x+dx[i];
+		if(ny<0||nx<0||ny>=N||nx>=M) continue;
+		if(visited[ny][nx]) continue;
+		if(a[ny][nx] == 0) continue;
+		DFS(ny,nx);
 	}
 }
-int main(void) {
-	int T;
-	vector<int> total_answer;
-	cin >> T;
-	for (int i = 0; i < T; i++) {
-		int M, N, K;
-		int answer = 0;
-		cin >> M >> N >> K;
-		int** pos = new int*[M];
-		for (int j = 0; j < M; j++)
-			pos[j] = new int[N] {0};
-		//이차원 배열 선언
-
-		for (int j = 0; j < K; j++) {
-			int X, Y;
-			cin >> X >> Y;
-			pos[X][Y] = 1;
+int main(){
+	ios::sync_with_stdio(0);
+	cin.tie(NULL);cout.tie(NULL);
+	cin>>T;
+	while(T!=0){
+		--T;
+		int ret=0;
+		cin>>M>>N>>K;
+		fill(&a[0][0],&a[0][0]+54*54,0);
+		fill(&visited[0][0],&visited[0][0]+54*54,0);
+		for(int i=0;i<K;++i){
+			int x,y;
+			cin>>x>>y;
+			a[y][x] = 1;
 		}
-		//입력값 다 받음
-		for (int j = 0; j < M; j++) {
-			for (int k = 0; k < N; k++) {
-				if (pos[j][k] == 1) {
-					adjacent_idx(j, k, pos, M, N);
-					answer++;
-				}
+		for(int i=0;i<N;++i){
+			for(int j=0;j<M;++j){
+				if(visited[i][j]||!a[i][j]) continue;
+				ret++;DFS(i,j);
 			}
 		}
-		total_answer.push_back(answer);
-
-		for (int j = 0; j < M; j++) {
-			delete[] pos[j];
-		}
-		delete[] pos;
-	}
-	for (int i = 0; i < T; i++) {
-		cout << total_answer[i] << endl;
+		cout << ret << '\n';
 	}
 	return 0;
-}
+} 
