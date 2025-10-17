@@ -1,35 +1,34 @@
-#include<iostream>
-#include<vector>
-#include<string>
+#include <bits/stdc++.h>
 
 using namespace std;
-
-int main(void) {
-	ios::sync_with_stdio(false);
-	cin.tie(0);
-
-	int N;
-	cin >> N;
-
-	for (int i = 0; i < N; ++i) {
-		vector<char> stack;
-		bool flag = true;
+int T;
+int main(){
+	ios::sync_with_stdio(0);
+	cin.tie(NULL);cout.tie(NULL);
+	cin>>T;
+	while(T!=0){
+		T--;
 		string s;
-		cin >> s;
-		for (auto ch : s) {
-			if (ch == '(') {
-				stack.push_back(')');
-			}
-			else {
-				if (stack.empty()||stack.back()!=ch) {
-					flag = false;
-					break;
+		bool f = false; 
+		cin>>s;
+		stack<char> stk;
+		for(char c:s){
+			if(stk.empty()){
+				if(c==')'){
+					f=true;
+					break;	
 				}
-				stack.pop_back();
+				stk.push(')');
+			}else{
+				if(stk.top() == c) stk.pop();
+				else stk.push(')');
 			}
+
 		}
-		if (!stack.empty() || !flag) cout << "NO\n";
+		if(!stk.empty()||f) cout<<"NO\n";
 		else cout << "YES\n";
+		
 	}
+	
 	return 0;
-}
+} 
