@@ -1,31 +1,43 @@
-#include<iostream>
-#include<vector>
-#include<string>
+#include <bits/stdc++.h>
+
 using namespace std;
-
-int main(void) {
-	ios::sync_with_stdio(false);
-	cin.tie(0);
-
-	while (true) {
-		string s;
-		bool flag = true;
-		getline(cin, s);
-		if (s == ".") break;
-		vector<char> stack;
-		for (auto ch : s) {
-			if (ch == '(') stack.push_back(')');
-			else if (ch == '[') stack.push_back(']');
-			else if ( ch == ')' || ch == ']') {
-				if (!stack.empty() && ch == stack.back()) stack.pop_back();
-				else {
-					flag = false;
+string s;
+int main(){
+	ios::sync_with_stdio(0);
+	cin.tie(NULL);cout.tie(NULL);
+	while(true){
+		getline(cin,s); 
+		if(s =="."){
+			break;	
+		}
+		stack<char> stk;
+		bool f = false;
+		for(char c : s){
+			if (c != '['&&c!=']'&&c!='('&&c!=')') continue;
+			if (stk.empty()){
+				if(c==')'||c==']'){
+					f = true;
 					break;
 				}
+				stk.push(c=='('?')':']');
+			}
+			else{
+				if(stk.top() == c)stk.pop();
+				else if(stk.top() == ')'&&c==']')
+				{
+					f = true;
+					break;
+				}
+				else if(stk.top() == ']'&&c==')'){
+					f = true;
+					break;
+				}
+				else stk.push(c=='('?')':']');
 			}
 		}
-		if (!stack.empty() || !flag) cout << "no\n";
-		else cout << "yes\n";
+		if(!stk.empty()||f) cout <<"no\n";
+		else cout<<"yes\n";
 	}
+
 	return 0;
 }
