@@ -1,32 +1,32 @@
-#include<iostream>
-#include<map>
-#include<vector>
-#include<algorithm>
-using namespace std;
-int N, C;
-map<int, int> m;
-map<int, int> prior;
-vector<int> v;
-bool compare(int a, int b) {
-	if(m[a]!=m[b])
-		return m[a] > m[b];
-	return prior[a] < prior[b];
+#include <bits/stdc++.h>
 
+using namespace std;
+int N,C,pr;
+vector<int> v;
+map<int,int> prior;
+map<int,int> m;
+bool cmp(int a,int b){
+	if (m[a]==m[b]) return prior[a]<prior[b];
+	return m[a]>m[b];
 }
-int main(void) {
-	ios::sync_with_stdio(false);
-	cin.tie(0);
-	cin >> N >> C;
-	int cnt=0;
-	for (int i = 0; i < N; ++i) {
-		int num;
-		cin >> num;
-		m[num]++;
-		v.push_back(num);
-		if (m[num] == 1) prior[num] = cnt++;
+int main(){
+	ios::sync_with_stdio(0);
+	cin.tie(NULL); cout.tie(NULL);
+	cin>>N>>C;
+	for(int i=0;i<N;++i){
+		int n;
+		cin>>n;
+		v.push_back(n);
+		m[n]++;
+		if(m[n]==1){
+			prior[n]=pr;
+			pr++;
+		} 
 	}
-	sort(v.begin(), v.end(), compare);
-	for (int i : v)
-		cout << i << ' ';
+	sort(v.begin(),v.end(),cmp);
+	for(int i : v){
+		cout << i << " ";
+	}
+	cout << '\n';
 	return 0;
 }
