@@ -1,63 +1,83 @@
-#include <iostream>
-#include <queue>
-#include <vector>
-#define pii pair<int,int>
+#include <bits/stdc++.h>
+
 using namespace std;
-vector<vector<int>> board(8,vector<int>(8,0));
-int N, M;
-vector<pii> virus;
-int bfs_push(int y,int x,queue<pii>& q, vector<vector<int>>& board) {
-	if (y < 0 || x < 0 || y >= N || x >= M || board[y][x] != 0)
-		return 0;
-	q.push({ y,x });
-	board[y][x] = 2;
-	return 1;
-}
-int BFS(vector<vector<int>> board,int cnt) {
+typedef pair<int,int> pii;
+int dy[] = {1,0,-1,0};
+int dx[] = {0,1,0,-1};
+int N,M,m;//3-8
+int a[10][10],visited[10][10],b[10][10];
+vector<pii> birus;
+int BFS(){
 	queue<pii> q;
-	for (int i = 0; i < virus.size(); ++i)
-		q.push(virus[i]);
-	while (!q.empty()) {
-		int y = q.front().first;
-		int x = q.front().second;
-		q.pop();
-		cnt-=bfs_push(y+1, x, q, board);
-		cnt-=bfs_push(y-1, x, q, board);
-		cnt-=bfs_push(y, x+1, q, board);
-		cnt-=bfs_push(y, x-1, q, board);
+	int ret=0;
+	fill(&visited[0][0],&visited[0][0]+10*10,0);
+	fill(&b[0][0],&b[0][0]+10*10,0);
+	for(int i=0;i<N;++i){
+		for(int j=0;j<M;++j){
+			b[i][j] = a[i][j];
+		}
 	}
-	return cnt;
-}
-int solve(int num,vector<pii>& zero,int cnt,int idx) {
-	if (num == 3)
-		return BFS(board, cnt);
-	int ret=-1;
-	for (int i = idx; i < zero.size(); ++i) {
-		int y = zero[i].first;
-		int x = zero[i].second;
-		board[y][x] = 1;
-		ret = max(ret, solve(num + 1, zero, cnt - 1,i+1));
-		board[y][x] = 0;
+	for(auto i : birus){
+		q.push(i);
+		visited[i.first][i.second] = 1;
+	}
+	while(!q.empty()){
+		int cy,cx;
+		tie(cy,cx) = q.front();q.pop();
+		for(int i=0;i<4;++i){
+			int ny = cy+dy[i];
+			int nx = cx+dx[i];
+			if(ny<0||nx<0||ny>=N||nx>=M) continue;
+			if(visited[ny][nx]) continue;
+			if(b[ny][nx]!=0) continue;
+			visited[ny][nx] = 1;
+			b[ny][nx] = 2;
+			q.push({ny,nx});
+		}
+	}
+	for(int i=0;i<N;++i){
+		for(int j=0;j<M;++j){
+			if(b[i][j] == 0) ret++;
+		}
 	}
 	return ret;
 }
-int main(void) {
-	ios::sync_with_stdio(false);
-	cin.tie(NULL);
-	cout.tie(NULL);
-	cin >> N >> M;
-	int cnt = 0;
-	vector<pii> zero;
-	for (int i = 0; i < N; ++i)
-		for (int j = 0; j < M; ++j) {
-			cin >> board[i][j];
-			if (board[i][j] == 2)
-				virus.push_back({ i,j });
-			else if (board[i][j] == 0) {
-				cnt++;
-				zero.push_back({ i,j });
-			}
+void combi(pii start,int size){
+	if(size == 3){
+		//BFS
+		m = max(m,BFS());
+		return;
+	}
+	auto i = start;
+	while(true){
+		i.second++;
+		if(i.second >=M){
+			i.first++;
+			i.second = 0;
 		}
-	cout << solve(0, zero, cnt, 0);
+		if(i.first>=N){
+			break;
+		}
+		if(a[i.first][i.second]!=0) continue;
+		
+		a[i.first][i.second] = 1;
+		combi(i,size+1);
+		a[i.first][i.second] = 0;
+	}
+}
+
+int main(){
+	ios::sync_with_stdio(0);
+	cin.tie(NULL);cout.tie(NULL);
+	cin >> N>>M;
+	for(int i=0;i<N;++i){
+		for(int j=0;j<M;++j){
+			cin>> a[i][j];
+			if(a[i][j] == 2)
+				birus.push_back({i,j});
+		}
+	}
+	combi({0,-1},0);
+	cout<<m<<'\n';
 	return 0;
 }
