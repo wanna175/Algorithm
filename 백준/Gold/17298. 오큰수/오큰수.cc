@@ -1,26 +1,31 @@
-#include<iostream>
-#include<vector>
-#define INF 1000001
-using namespace std;
-int answer[1000000];
-int main(void) {
-	ios::sync_with_stdio(false);
-	cin.tie(NULL);
+#include <bits/stdc++.h>
 
-	int N;
-	cin >> N;
-	vector<pair<int, int>> stack;
-	stack.push_back({INF, -1});
-	for (int i = 0; i < N; ++i) {
-		int num;
-		cin >> num;
-		answer[i] = -1;
-		while (stack.back().first < num) {
-			answer[stack.back().second] = num;
-			stack.pop_back();
-		}
-		stack.push_back({ num,i });
+using namespace std;
+int N;
+stack<int> st;
+vector<int> a(1000001,0);
+vector<int> ret(1000001,-1);
+int main(){
+	ios::sync_with_stdio(0);
+	cin.tie(NULL);cout.tie(NULL);
+	
+	cin>>N;
+	for(int i=1;i<=N;++i){
+		cin>>a[i];
 	}
-	for (int i = 0; i < N; ++i) cout << answer[i] << " ";
+	st.push(1);
+	for(int i=2;i<=N;++i){
+		if (a[i-1]<a[i]){
+			while(!st.empty()){
+				int t = st.top();
+				if(a[t]<a[i]){
+					ret[t] = a[i];
+					st.pop();
+				}else break;
+			}
+		}
+		st.push(i);
+	}   
+	for(int i=1;i<=N;++i) cout << ret[i]<< " "; 
 	return 0;
 }
