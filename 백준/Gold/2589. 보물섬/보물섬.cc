@@ -1,51 +1,51 @@
-#include <iostream>
-#include <queue>
-#include <vector>
+#include <bits/stdc++.h>
+
 using namespace std;
 typedef pair<int,int> pii;
-
-int dy[4] = { 1, 0, -1,  0 };
-int dx[4] = { 0, 1,  0, -1 };
-int N, M;
-int max_ret;
-char land[50][50];
-void bfs(int y, int x) {
-        if (land[y][x] == 'W') return;
-        int ret=0;
-        int distance[50][50] = {0};
-        bool is_visit[50][50] = {false};
-        queue<pii> q;
-        q.push(make_pair(y,x));
-        is_visit[y][x] = true;
-
-        while(!q.empty()) {
-                pii cur = q.front();
-                q.pop();
-
-                for (int i=0;i<4;++i){
-                        int ny = cur.first + dy[i];
-                        int nx = cur.second + dx[i];
-                        if (ny >= N || ny < 0 || nx >= M || nx < 0) continue;
-                        if (land[ny][nx] !='L' || is_visit[ny][nx]) continue;
-                        is_visit[ny][nx] = true;
-                        distance[ny][nx] = distance[cur.first][cur.second]+1;
-                        if (distance[ny][nx] > ret) ret = distance[ny][nx];
-                        q.push(make_pair(ny,nx));
-                }
-        }
-        if (max_ret < ret) max_ret = ret;
+int N,M,ret=-1;
+int a[54][54],visited[54][54];
+const int dy[] = {1,0,-1,0};
+const int dx[] = {0,1,0,-1};
+int BFS(int y,int x){
+	int r=0;
+	fill(&visited[0][0],&visited[0][0]+54*54,0);
+	queue<pii> q;
+	q.push({y,x});
+	visited[y][x] = 1;
+	while(!q.empty()){
+		int cy,cx;
+		tie(cy,cx) = q.front();q.pop();
+		for(int i=0;i<4;++i){
+			int ny = cy+dy[i];
+			int nx = cx+dx[i];
+			if(ny<0||nx<0||ny>=N||nx>=M) continue;
+			if(visited[ny][nx]) continue;
+			if(a[ny][nx]!=1) continue;
+			visited[ny][nx] = visited[cy][cx]+1;
+			r = max(r,visited[ny][nx]);
+			q.push({ny,nx});
+		}
+	}
+	return r;
 }
-int main(void) {
-        cin >> N >> M;
-        for (int i=0;i<N;++i)
-                for (int j=0;j<M;++j) {
-                        cin >> land[i][j];
-                }
-
-        for (int i=0;i<N;++i)
-                for (int j=0;j<M;++j)
-                        bfs(i,j);
-
-        cout << max_ret << '\n';
-        return 0;
+int main(){
+	ios::sync_with_stdio(0);
+	cin.tie(NULL);cout.tie(NULL);
+	
+	cin>>N>>M;
+	for(int i=0;i<N;++i){
+		string s;
+		cin >> s;
+		for(int j=0;j<M;++j){
+			if(s[j]=='L') a[i][j] = 1;
+		}
+	}
+	for(int i=0;i<N;++i){
+		for(int j=0;j<M;++j){
+			if(a[i][j]!=1) continue;
+			ret = max(ret,BFS(i,j));
+		}
+	}
+	cout << ret-1 << '\n';
+	return 0;
 }

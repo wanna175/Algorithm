@@ -4,7 +4,7 @@
 
 ### 성능 요약
 
-메모리: 2024 KB, 시간: 132 ms
+메모리: 2048 KB, 시간: 108 ms
 
 ### 분류
 
@@ -12,7 +12,7 @@
 
 ### 제출 일자
 
-2025년 5월 30일 15:33:24
+2025년 10월 21일 14:06:04
 
 ### 문제 설명
 
@@ -22,7 +22,7 @@
 
 <p>예를 들어 위와 같이 지도가 주어졌다면 보물은 아래 표시된 두 곳에 묻혀 있게 되고, 이 둘 사이의 최단 거리로 이동하는 시간은 8시간이 된다.</p>
 
-<p style="text-align: center;"><img alt="" src="https://www.acmicpc.net/upload/images/XqDkWCRUWbzZ.jpg" style="width: 238px; height: 144px; "></p>
+<p style="text-align: center;"><img alt="" src="" style="width: 238px; height: 144px; "></p>
 
 <p>보물 지도가 주어질 때, 보물이 묻혀 있는 두 곳 간의 최단 거리로 이동하는 시간을 구하는 프로그램을 작성하시오.</p>
 
