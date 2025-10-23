@@ -1,86 +1,64 @@
-#include <iostream>
-#include <vector>
-#include <queue>
-#include <cmath>
-#include <set>
-#include <cstring>
+#include <bits/stdc++.h>
+
 using namespace std;
-int N;
-int p[11];
-bool sel[11];
-vector<int> adj[11];
-int min_ret = 99999;
-bool check(int f, set<int> se) {
-        if (se.size()==0) return false;
-        queue<int> q;
-        q.push(f);
-        se.erase(f);
-
-        while(!q.empty()) {
-                int cur = q.front();
-                q.pop();
-                for (int nxt : adj[cur]) {
-                        if (se.find(nxt)==se.end()) continue;
-                        se.erase(nxt);
-                        q.push(nxt);
-                }
-        }
-        if (se.size()!=0) return false;
-        return true;
+int N,n,d,ret=1e8;
+int p[12],visited[12];
+int adj[12][12];
+vector<int> a,b;
+void solve(int s,vector<int> v){
+	visited[s] = 1;	
+	for(int i : v){
+		if(visited[i]) continue;
+		if(!adj[s][i]) continue;
+		solve(i,v);
+	}
 }
-void calc() {
-        set<int> a,b;
-        int i_a=-1,i_b=-1;
-        int ret = 0;
-        for (int i=1;i<=N;++i) {
-                if (sel[i]) {
-                        i_a = i;
-                        ret+=p[i];
-                        a.insert(i);
-                }
-                else {
-                        i_b = i;
-                        ret-=p[i];
-                        b.insert(i);
-                }
-        }
-        bool b_a = check(i_a,a);
-        if (!b_a) return;
-        bool b_b = check(i_b,b);
-        if (!b_b) return;
-
-        ret = abs(ret);
-        if (ret < min_ret) min_ret = ret;
-}
-void select(int cur) {
-        if (cur == N+1) {
-                calc();
-                return;
-        }
-
-        select(cur+1);
-
-        sel[cur] = true;
-        select(cur+1);
-        sel[cur] = false;
-}
-int main(void) {
-        cin >> N;
-        for (int i=1;i<=N;++i)
-                cin >> p[i];
-        for (int i=1;i<=N;++i) {
-                int n;
-                cin >> n;
-                for (int j=0;j<n;++j) {
-                        int a;
-                        cin >> a;
-                        adj[i].push_back(a);
-                }
-        }
-        sel[1] = true;
-        select(2);
-        if (min_ret == 99999) cout << "-1";
-        else
-                cout << min_ret << '\n';
-        return 0;
+int main(){
+	ios::sync_with_stdio(0);
+	cin.tie(NULL);cout.tie(NULL);
+	cin>>N;
+	for(int i=1;i<=N;++i){
+		cin>>p[i];
+	}
+	for(int i=1;i<=N;++i){
+		cin>>n;
+		for(int j=0;j<n;++j){
+			cin >> d;
+			adj[i][d] = 1;
+			adj[d][i] = 1;
+		}
+	}
+	for(int i=0;i<(1<<N);++i){
+		for(int j=0;j<N;++j){
+			if(i&(1<<j)){
+				a.push_back(j+1);
+			}else b.push_back(j+1);
+		}
+		if(a.size()==0||b.size()==0) continue;
+		int ra = 0,rb=0;
+		fill(&visited[0],&visited[0]+12,0);
+		solve(a[0],a);
+		for(int l : a){
+			if(!visited[l]){
+				ra = -1;
+				break;
+			}
+			ra+=p[l];
+		}
+		fill(&visited[0],&visited[0]+12,0);
+		solve(b[0],b);
+		for(int l : b){
+			if(!visited[l]){
+				rb = -1;
+				break;
+			}
+			rb+=p[l];
+		}
+		a.clear();b.clear();
+		if(ra==-1||rb==-1) continue;
+		ret = min(ret,abs(ra-rb));
+	}
+	if(ret == 1e8) cout << -1 <<'\n';
+	else cout <<ret << '\n';
+	return 0;
 }
