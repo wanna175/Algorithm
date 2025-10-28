@@ -1,43 +1,41 @@
-#include<iostream>
-#include<queue>
-#define MAX 500001
+#include <bits/stdc++.h>
+
 using namespace std;
-bool board[2][MAX];//짝수초 홀수초 기록
-int N, K;
-int dx[3] = { 1,-1,0 };
-int BFS() {
-	int bt = 0;
-	queue<pair<int,int>> Q;
-	Q.push({N,0});
-	board[0][N] = true;
-	while (!Q.empty()) {
-		int cur = Q.front().first;
-		int nt = Q.front().second+1;
-		if (bt != nt) {
-			bt = nt;
-			K += bt;
-			if (K >= MAX) break;
+int N,K;
+int a[2][500001];
+int solve(){
+	queue<int> q;
+	q.push(N);
+	a[0][N] = 1;
+	int time = 1;
+	while(q.size()){
+		K+=time;
+		if(K>500000) return -1;
+		if(a[time%2][K]) return time;
+		int qsize = q.size();
+		for(int i=0;i<qsize;++i){
+			int cur = q.front();q.pop();
+			for(int next : {cur+1,cur-1,cur*2}){
+				if(next<0||next>=500001) continue;
+				if(a[time%2][next])	continue;
+				a[time%2][next] = 1;
+				if(K == next) return time;	
+				q.push(next);
+			}
 		}
-		Q.pop();
-		for (int i = 0; i < 3; ++i) {
-			int next = cur + dx[i];
-			if (i == 2) next *= 2;
-			if (next < 0 || next >= MAX || board[nt % 2][next]) continue;
-			board[nt % 2][next] = true;
-			if (board[bt % 2][K]) return bt;
-			Q.push({ next,nt });
-		}
+		time++;		
 	}
 	return -1;
 }
-int main() {
-	ios::sync_with_stdio(false);
-	cin.tie(0);
-	cin >> N >> K;
-	if (N == K) {
-		cout << 0;
+int main(){
+	ios::sync_with_stdio(0);
+	cin.tie(NULL);cout.tie(NULL);
+	cin>>N>>K;
+	if(N==K){
+		cout << 0 <<'\n';
 		return 0;
 	}
-	cout << BFS();
+	int ret = solve();
+	cout << ret << '\n';
 	return 0;
 }
