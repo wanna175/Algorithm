@@ -2,52 +2,21 @@
 
 using namespace std;
 int N,L,ret;
-int a[104][104],visited[104];
+int a[104][104];
 
 void check(){
 	for(int i=0;i<N;++i){
-		fill(&visited[0],&visited[0]+104,0);
-		bool flag = 0;
-		for(int j=0;j<N-1;++j){
-			if(a[i][j]==a[i][j+1]){
-				continue;
-			}
-			else if(a[i][j]==a[i][j+1]+1){
-				int start = a[i][j+1];
-				if(j+L>=N){
-					flag = 1;
-					break;
-				}
-				for(int l=1;l<=L;++l){			
-					if(a[i][j+l] != start){
-						flag = 1;
-						break;
-					}
-					visited[j+l] = 1;
-				}
-				if(flag) break;
-			}
-			else if(a[i][j]==a[i][j+1]-1){
-				int start = a[i][j];
-				if(j-L+1<0){
-					flag = 1;
-					break;
-				}
-				for(int l=0;l<L;++l){			
-					if(a[i][j-l] != start||visited[j-l]){
-						flag = 1;
-						break;
-					}
-					visited[j-l] = 1;
-				}
-				if(flag) break;
-			}
+		int cnt = 1;
+		bool f = 0;
+		for(int j=1;j<N;++j){
+			if(a[i][j] == a[i][j-1]) cnt++;
+			else if(a[i][j] == a[i][j-1]+1&&cnt>=L) cnt=1;
+			else if(a[i][j] == a[i][j-1]-1&&cnt>=0) cnt=1-L;
 			else {
-				flag = 1;
-				break;
+				f = 1;break;
 			}
 		}
-		if(!flag) ret++;
+		if(!f&&cnt>=0) ret++;
 	}
 }
 int main(){
