@@ -1,39 +1,28 @@
-#include <iostream>
-#include <string>
-#include <map>
+#include <bits/stdc++.h>
+
 using namespace std;
-map<int, bool> S;
-void resetMap(bool val) {
-	for (int i = 1; i <= 20; ++i)
-		S[i] = val;
-}
-int main(void) {
-	ios::sync_with_stdio(false);
-	cin.tie(NULL);
-	int M,x;
-	cin >> M;
-	string tmp = "";
-	for (int i = 1; i <= 20; ++i)
-		S[i] = false;
-	for (int i = 0; i < M; ++i) {
-		cin >> tmp;
-		if (tmp == "all") {
-			resetMap(true);
+int m,n,s;
+string str;
+int main(){
+	ios_base::sync_with_stdio(0);
+	cin.tie(NULL); cout.tie(NULL);
+	cin>>m;
+	for(int i=0;i<m;++i){
+		cin>>str;
+		if(str=="all"){
+			s = (1<<20)-1;
+			continue;
+		}else if(str=="empty"){
+			s = 0;
 			continue;
 		}
-		else if (tmp == "empty") {
-			resetMap(false);
-			continue;
-		}
-		cin >> x;
-		if (tmp == "add")
-			S[x] = true;
-		else if (tmp == "remove")
-			S[x] = false;
-		else if (tmp == "check")
-			cout << S[x] << '\n';
-		else if (tmp == "toggle")
-			S[x] = !S[x];
+		cin>>n;
+		if(str=="add") s|=(1<<(n-1));
+		else if(str == "remove") s&=~(1<<(n-1));
+		else if(str == "check"){
+			if(s&(1<<(n-1))) cout << 1 <<'\n';
+			else cout << 0 <<'\n';
+		}else if(str=="toggle") s^=(1<<(n-1));
 	}
 	return 0;
 }
