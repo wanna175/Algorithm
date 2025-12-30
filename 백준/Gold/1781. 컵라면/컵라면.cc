@@ -2,29 +2,26 @@
 
 using namespace std;
 typedef pair<int,int> pii;
-int N,ret;//200000
-vector<pii> a;
+int n,d,a,ret;
+vector<pii> v;
 priority_queue<int> pq;
 int main(){
 	ios_base::sync_with_stdio(0);
 	cin.tie(NULL);cout.tie(NULL);
-	cin>>N;
-	for(int i=0;i<N;++i){
-		int d,n;
-		cin>>d>>n;
-		a.push_back({d,n});
+	cin>>n;
+	for(int i=0;i<n;++i){
+		cin>>d>>a;
+		v.push_back({d,a});
 	}
-	sort(a.begin(),a.end(),greater<pii>());
-
-	int j=0;
-	for(int i=N;i>0;--i){
-		while(j<N&&i<=a[j].first){
-			pq.push(a[j].second);j++;
-		}
+	sort(v.begin(),v.end(),greater<pii>());
+	int i=0;
+	for(int day=n;day>0;--day){
+		while(i<n&&day<=v[i].first) pq.push(v[i++].second);
 		if(pq.size()){
-			ret+=pq.top();pq.pop();	
+			ret+=pq.top();
+			pq.pop();
 		}
 	}
-	cout << ret; 
+	cout << ret;
 	return 0;
 }
