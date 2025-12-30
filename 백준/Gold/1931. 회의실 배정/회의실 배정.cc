@@ -1,44 +1,24 @@
-#include <iostream>
-#include <algorithm>
-#include <vector>
+#include <bits/stdc++.h>
+
 using namespace std;
-bool Compare(pair<int, int> p1, pair<int, int> p2) {
-	if (p1.second > p2.second)
-		return true;
-	else if (p1.second == p2.second) {
-		return p1.first > p2.first;
+typedef pair<int,int> pii;
+int n,s,e,ret;
+vector<pii> v;
+int main(){
+	ios_base::sync_with_stdio(0);
+	cin.tie(NULL);cout.tie(NULL);
+	cin>>n;
+	for(int i=0;i<n;++i){
+		cin>>s>>e;
+		v.push_back({e,s});
 	}
-	else
-		return false;
-		
-}
-int solve(vector<pair<int, int>>& arr,int end,int cur,int ret) {
-	while (cur>=0) {
-		if (arr[cur].first >= end)
-			break;
-		else
-			cur--;
+	sort(v.begin(),v.end());
+	int end=0;
+	for(int i=0;i<n;++i){
+		if(end>v[i].second) continue;
+		end = v[i].first;
+		ret++;
 	}
-	if (cur == -1)
-		return ret;
-	end = arr[cur].second;
-	return solve(arr, end, cur-1, ret + 1);
-
-}
-int main(void) {
-	ios::sync_with_stdio(false);
-	cin.tie(NULL);
-
-	int N;
-	cin >> N;
-	vector<pair<int, int>> arr;
-	for (int i = 0; i < N; ++i) {
-		int start, end;
-		cin >> start >> end;
-		arr.push_back(make_pair(start, end));
-	}
-	sort(arr.begin(), arr.end(), Compare);
-	cout << solve(arr, 0, arr.size()-1,0);
-	
+	cout << ret;
 	return 0;
 }
